@@ -1,92 +1,44 @@
-# import MNIST
-# import function
-# import numpy as np
-# from model import FNN
-# import time
-#
-#
-# # Data preprocessing
-# # Load training data
-# x, y, examples_train = MNIST.training_data()
-#
-# # Load testing data
-# test_x, test_y, examples_test = MNIST.testing_data()
-# test_x = test_x.T
-#
-# # one-hot encoding
-# digits = 10
-# y = y.reshape(1, examples_train)
-# test_y = test_y.reshape(1, examples_test)
-# y = np.eye(digits)[y.astype('int32')]
-# test_y = np.eye(digits)[test_y.astype('int32')]
-# y = y.T.reshape(digits, examples_train)
-# test_y = test_y.T.reshape(digits, examples_test)
-#
-# # Spilt training data: 70% for training, 30% for validation
-# spilt = int(0.7 * examples_train)
-# train_x = x[:spilt].T
-# train_y = y[:, :spilt]
-# val_x = x[spilt:].T
-# val_y = y[:, spilt:]
-#
-#
-# # Normalize data
-# train_x = train_x / 255.
-# val_x = val_x / 255.
-# test_x = test_x / 255.
-#
-# # Hyper parameters
-# input_size = 28 * 28
-# lr = 0.1
-# epoch = 101
-# batch_size = 64
-
-import dataloader
+import MNIST
 import function
 import numpy as np
 from model import FNN
-from layers import SGD
-import torch
 import time
+
 
 # Data preprocessing
 # Load training data
-print("Load data... ")
-train_path = 'Data_train'
-x, y = dataloader.data_set(folder_path=train_path)
-train_length = len(y)
+x, y, examples_train = MNIST.training_data()
 
 # Load testing data
-test_path = 'Data_test'
-test_x, test_y = dataloader.data_set(folder_path=test_path)
-test_length = len(test_y)
-print('Done!')
+test_x, test_y, examples_test = MNIST.testing_data()
+test_x = test_x.T
 
 # one-hot encoding
-digits = 3
-y = y.reshape(1, train_length)
-test_y = test_y.reshape(1, test_length)
+digits = 10
+y = y.reshape(1, examples_train)
+test_y = test_y.reshape(1, examples_test)
 y = np.eye(digits)[y.astype('int32')]
 test_y = np.eye(digits)[test_y.astype('int32')]
-y = y.T.reshape(digits, train_length)
-test_y = test_y.T.reshape(digits, test_length)
-
+y = y.T.reshape(digits, examples_train)
+test_y = test_y.T.reshape(digits, examples_test)
 
 # Spilt training data: 70% for training, 30% for validation
-spilt = int(0.7 * train_length)
-train_x = x[:spilt]
-train_y = y[:, :spilt].T
-val_x = x[spilt:]
-val_y = y[:, spilt:].T
+spilt = int(0.7 * examples_train)
+train_x = x[:spilt].T
+train_y = y[:, :spilt]
+val_x = x[spilt:].T
+val_y = y[:, spilt:]
 
-# print(train_x.shape)
-# print(train_y[0])
-# print(val_x.shape)
-# print(val_y.shape)
 # Normalize data
 train_x = train_x / 255.
 val_x = val_x / 255.
 test_x = test_x / 255.
+
+# Hyper parameters
+input_size = 28 * 28
+lr = 0.1
+epoch = 101
+batch_size = 64
 
 # Initialize model
 model = FNN(input_dim=input_size, output_dim=10)
